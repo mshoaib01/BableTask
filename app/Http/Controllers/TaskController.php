@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendEmailToUsersNewTaskCreatedJob;
+use App\Jobs\SendEmailToUsersTaskUpdatedJob;
 
 class TaskController extends Controller
 {
@@ -34,7 +37,11 @@ class TaskController extends Controller
         // Add the 'user_id' manually using the ID of the authenticated user
         $validatedData['user_id'] = Auth::id();
 
-        Task::create($validatedData);
+        $task = Task::create($validatedData);
+        // Chunking users and dispatching jobs
+        User::select('id', 'email')->chunk(100, function ($users) use ($task) {
+            dispatch(new SendEmailToUsersNewTaskCreatedJob($users, $task));
+        });
 
         return redirect()->route('tasks.list')->with('success', 'Task created successfully.');
     }
@@ -58,6 +65,11 @@ public function update(Request $request, $id)
 
     $task = Task::findOrFail($id);
     $task->update($request->except(['user_id']));
+    // Chunking users and dispatching jobs
+    User::select('id', 'email')->chunk(100, function ($users) use ($task) {
+        dispatch(new SendEmailToUsersTaskUpdatedJob($users, $task));
+    });
+
 
     return redirect()->route('tasks.list')->with('success', 'Task updated successfully.');
 }

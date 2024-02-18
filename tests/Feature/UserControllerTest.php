@@ -31,13 +31,22 @@ class UserControllerTest extends TestCase
     public function test_user_login_with_email_password(): void
     {
         //create user
-        $user = User::factory()->create();
+        //  Arrange: Create a user
+        $user = User::factory()->create([
+            'email' => 'user@example.com',
+            'password' => bcrypt('password'),
+        ]);
         //login
-        $this->post('login',[
+        $response = $this->post('/login', [ 
             'email' => $user->email,
             'password' => 'password'
         ]);
 
-        $this->assertAuthenticated();
+         
+
+        // Assert: Check for correct response status
+        $response->assertStatus(200);
+
+        $response->assertAuthenticated();
     }
 }

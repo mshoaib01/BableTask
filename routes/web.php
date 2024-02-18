@@ -23,6 +23,7 @@ Route::get('/', function () {
 // Display a login form
 Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
+Route::get('/apidoc', function () { return view('apidoc'); })->name('apidoc'); 
 
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [UserController::class, 'register']);
