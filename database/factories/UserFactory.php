@@ -26,9 +26,10 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+           // 'email_verified_at' => now(),
+            'user_role' => 'Admin', // Specify the role here
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+           // 'remember_token' => Str::random(10),
         ];
     }
 
@@ -39,6 +40,19 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user should have a specific role.
+     *
+     * @param string $role
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function role(string $role)
+    {
+        return $this->state([
+            'user_role' => $role,
         ]);
     }
 }
