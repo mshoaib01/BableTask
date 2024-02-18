@@ -1,70 +1,75 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+1. Extract the Zip File
+First, extract the zip file to your desired location. This will be the root directory of your Laravel project.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+2. Install Composer Dependencies Open a terminal or command prompt and navigate to the root directory of your extracted project. 
+Use the cd command to change your directory to the project folder:
+cd /path/to/your/project
 
-## About Laravel
+Once you're in the project directory, 
+run the following command to install the PHP dependencies specified in the composer.json file:
+composer install
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+3. Create an Environment File
+Copy the .env.example file to a new file named .env. This file contains environment-specific variables. You can do this with the following command:
+copy .env.example .env  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+4. Generate an Application Key
+Run the following Artisan command to generate a new application key.
+This key is used to secure your session and encrypted data:
+php artisan key:generate
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+5. Run Migrations
+If your project uses a database, run the migrations to create the database schema:
+php artisan migrate
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+6. Install Node.js Dependencies (if necessary)
+If your project uses Node.js dependencies (for frontend assets like Vue.js, React, or just to compile assets with Laravel Mix), 
+make sure you have Node.js and npm installed. Then run:
+npm install
+And compile your assets (if needed) with:
+npm run dev  # For development
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+7. For Laravel Queues 
+In .env File  set this mailtrap details that i am using for sending email
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=f9b9a3653b8ec9
+MAIL_PASSWORD=9a8a37c5f8226a
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+8. Setting QUEUE_CONNECTION to database
+To use the database queue driver, I set the QUEUE_CONNECTION environment variable in your .env file to database:
 
-## Contributing
+QUEUE_CONNECTION=database
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+9. Preparing the Database for QUEUE
+Before the use of database queue driver, you need to prepare your database to store the job queue:
 
-## Code of Conduct
+Create the Jobs Table: Run the following Artisan command to create a migration for the jobs table:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+php artisan queue:table
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+10. Migrate: Apply the migration to create the jobs table in your database:
 
-## License
+php artisan migrate
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# BableTask
->>>>>>> 440ef8b4c6261998f45441f8b0179cbc0105538f
+
+11 .Running the Queue Worker
+After setting up the database queue connection and migrating your database, you need to start a queue worker to process the queued jobs. Run the following command to start a worker:
+php artisan queue:work
+
+
+
+12. Serve the Application
+Open a new terminal or command prompt and navigate to the root directory of your extracted project. 
+Use the cd command to change your directory to the project folder
+cd /path/to/your/project
+
+Finally, you can serve your Laravel application using the built-in PHP server:
+php artisan serve
